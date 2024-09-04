@@ -164,3 +164,52 @@ header {
     font-size: 14px;
     color: #666;
 }
+
+.search-bar {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    background-color: #f6f6f6b3;
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+.search-input {
+    flex-grow: 1;
+    border: none;
+    background-color: transparent;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.search-icon {
+    color: #b1b1b1;
+    cursor: pointer;
+}
+
+.plus {
+    color: #b1b1b1;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.plus-container {
+    background-color: #f6f6f6b3;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
