@@ -8,6 +8,7 @@ const app = createApp({
                     name: 'Michele',
                     avatar: './img/avatar_1.jpg',
                     visible: true,
+                    online: true,
                     messages: [
                         {
                             date: '10/01/2020 15:30:55',
@@ -30,6 +31,7 @@ const app = createApp({
                     name: 'Fabio',
                     avatar: './img/avatar_2.jpg',
                     visible: true,
+                    offline: true,
                     messages: [
                         {
                             date: '20/03/2020 16:30:00',
@@ -52,6 +54,7 @@ const app = createApp({
                     name: 'Samuele',
                     avatar: './img/avatar_3.jpg',
                     visible: true,
+                    online: true,
                     messages: [
                         {
                             date: '28/03/2020 10:10:40',
@@ -74,6 +77,7 @@ const app = createApp({
                     name: 'Alessandro B.',
                     avatar: './img/avatar_4.jpg',
                     visible: true,
+                    busy: true,
                     messages: [
                         {
                             date: '10/01/2020 15:30:55',
@@ -91,6 +95,7 @@ const app = createApp({
                     name: 'Alessandro L.',
                     avatar: './img/avatar_5.jpg',
                     visible: true,
+                    online: true,
                     messages: [
                         {
                             date: '10/01/2020 15:30:55',
@@ -108,6 +113,7 @@ const app = createApp({
                     name: 'Claudia',
                     avatar: './img/avatar_6.jpg',
                     visible: true,
+                    busy: true,
                     messages: [
                         {
                             date: '10/01/2020 15:30:55',
@@ -130,6 +136,7 @@ const app = createApp({
                     name: 'Federico',
                     avatar: './img/avatar_7.jpg',
                     visible: true,
+                    offline: true,
                     messages: [
                         {
                             date: '10/01/2020 15:30:55',
@@ -147,6 +154,7 @@ const app = createApp({
                     name: 'Davide',
                     avatar: './img/avatar_8.jpg',
                     visible: true,
+                    offline: true,
                     messages: [
                         {
                             date: '10/01/2020 15:30:55',
@@ -166,10 +174,97 @@ const app = createApp({
                     ],
                 }
             ],  
+            contattoSelezionato: '',
+            nuovoMessaggio: '',
+            searchBar: ''
+        }
+    },
+    methods: {
+        selezionaContatto(index) {
+            if (this.contattoSelezionato !== index) {
+                console.log("Selezionando contatto con indice:", index);
+                this.contattoSelezionato = index;
+                this.renderConversation();
+            } else {
+                console.log("Il contatto selezionato è già attivo.");
+            }
+        },
+        renderConversation() {
+            if (this.contattoSelezionato !== true) {
+                console.log("Renderizzazione conversazione per contatto:", this.contattoSelezionato);
+                const container = document.getElementById('conversation-container');
+                const contact = this.contacts[this.contattoSelezionato];
+                let conversationHTML = `
+                    <div class="conversation">
+                        <div class="contact-header">
+                            <img src="${contact.avatar}" alt="${contact.name}" class="contact-avatar">
+                            <h3>${contact.name}</h3>
+                        </div>
+                        <div class="messages-container">
+                            ${contact.messages.map(message => `
+                                <div class="message ${message.status}">
+                                    <p>${message.message}</p>
+                                    <span class="message-time">${message.date}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = conversationHTML;
+            }
+        },
+        // invia il messaggio
+        inviaMessaggio() {
+            if (this.nuovoMessaggio.trim() && this.contattoSelezionato !== null) {
+                const now = new Date();
+                const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+                
+                this.contacts[this.contattoSelezionato].messages.push({
+                    date: formattedDate,
+                    message: this.nuovoMessaggio,
+                    status: 'sent'
+                });
+
+                this.nuovoMessaggio = '';
+                this.renderConversation();
+                // ricevi la risposta automatico
+                setTimeout(() => {
+                    this.riceviMessaggioAutomatico();
+                }, 1000);
+            }
+        },
+        riceviMessaggioAutomatico() {
+            const now = new Date();
+            const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+            
+            if (this.contacts[this.contattoSelezionato].online === true) {
+                this.contacts[this.contattoSelezionato].messages.push({
+                    date: formattedDate,
+                    message: 'I agree!',
+                    status: 'received'
+                });
+            } else if (this.contacts[this.contattoSelezionato].offline === true) {
+                this.contacts[this.contattoSelezionato].messages.push({
+                    date: formattedDate,
+                    message: "I'm sorry, I'm not available right now",
+                    status: 'received'
+                });
+            } else if (this.contacts[this.contattoSelezionato].busy === true) {
+                this.contacts[this.contattoSelezionato].messages.push({
+                    date: formattedDate,
+                    message: "I'm sorry, I'm busy right now",
+                    status: 'received'
+                });
+            }
+
+            this.renderConversation();
+        },
+        filteredContacts() {
+            return this.contacts.filter(contact => 
+                contact.name.toLowerCase().includes(this.searchBar.toLowerCase())
+            );
         }
     }
 });
 
 app.mount('#app');
-
-       

@@ -12,7 +12,7 @@
 </head>
 <body>
     <!-- main -->
-    <main>
+    <main id="app">
         <div class="container">
             <div class="my-row">
                 <div class="my-col-3">
@@ -42,7 +42,7 @@
                         </div>
                         <div class="my-row-2 flex">
                             <div class="search-bar">
-                                <input type="text" placeholder="Cerca o inizia una nuova chat" class="search-input">
+                                <input type="text" v-model="searchBar" placeholder="Cerca o inizia una nuova chat" class="search-input">
                                 <i class="fa-solid fa-search search-icon"></i>
                             </div>
                             <div class="plus-container">
@@ -50,9 +50,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="my-row-8" id="app">
-                        <div v-for="contact in contacts" :key="contact.name" class="contact-item">
+                    <div class="my-row-8">
+                        <div v-for="(contact, index) in filteredContacts()" :key="contact.name" class="contact-item" @click="selezionaContatto(index)">
+                            <div class="online-status">
                             <img :src="contact.avatar" :alt="contact.name" class="contact-avatar">
+                                <i class="fa-solid fa-circle online" v-if="contact.online"></i>
+                                <i class="fa-solid fa-circle offline" v-else-if="contact.offline"></i>
+                                <i class="fa-solid fa-circle busy" v-else-if="contact.busy"></i>
+                            </div>
                             <div class="contact-info">
                                 <h4>{{ contact.name }}</h4>
                                 <p v-if="contact.messages.length">{{ contact.messages[contact.messages.length - 1].message }}</p>
@@ -62,11 +67,13 @@
                 </div>
                 <div class="my-col-9">
                     <div class="my-row-1"></div>
-                    <div class="my-row-7 text bg-mine">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/512px-Vue.js_Logo_2.svg.png" class="logo-vue" alt="Logo Vue">
-                        <h2>Benvenuto nella Boolzapp</h2>
-                        <p>inizia a chattare con i tuoi amici</p>
-                        <img src="img/logo-con-nomebianco.png" alt="chat">
+                    <div class="my-row-7" id="conversation-container">
+                        <div class="text bg-mine">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/512px-Vue.js_Logo_2.svg.png" class="logo-vue" alt="Logo Vue">
+                            <h2>Benvenuto nella Boolzapp</h2>
+                            <p>inizia a chattare con i tuoi amici</p>
+                            <img src="img/logo-con-nomebianco.png" alt="chat">
+                        </div>
                     </div>
                     <div class="my-row-2 bg-white">
                         <hr>
@@ -79,15 +86,17 @@
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                         </div>
                         <div class="input-container">
-                            <input type="text"  placeholder="Scrivi un messaggio" class="message-input">
+                            <input type="text" v-model="nuovoMessaggio" @keyup.enter="inviaMessaggio" placeholder="Scrivi un messaggio" class="message-input">
                         </div>
-                        <div class="send-button">
-                            <p>invio</p>
-                        </div>
+                        <div class="button-c">
+                            <button @click="inviaMessaggio" class="send-button">
+                                <p>invio</p>
+                            </button>
+                        </div> 
                     </div>
                 </div>
             </div>
-          </div>
+        </div>
     </main>
     <script src="js/script.js"></script>
 </body>
