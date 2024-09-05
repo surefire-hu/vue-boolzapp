@@ -16,6 +16,7 @@
         <div class="container">
             <div class="my-row">
                 <div class="my-col-3">
+                    <!-- profilo con barra di ricerca -->
                     <div class="my-row-2 bg-grad">
                         <div class="my-row-2">
                             <div class="contenitore-icon">
@@ -50,6 +51,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- contatti -->
                     <div class="my-row-8">
                         <div v-for="(contact, index) in filteredContacts()" :key="contact.name" class="contact-item" @click="selezionaContatto(index)">
                             <div class="online-status">
@@ -65,6 +67,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- chat -->
                 <div class="my-col-9">
                     <div class="my-row-1"></div>
                     <div class="my-row-7" id="conversation-container">
@@ -75,6 +78,7 @@
                             <img src="img/logo-con-nomebianco.png" alt="chat">
                         </div>
                     </div>
+                    <!-- barra degli strumenti -->
                     <div class="my-row-2 bg-white">
                         <hr>
                         <div class="icon-bar">
@@ -85,6 +89,7 @@
                             <i class="fa-solid fa-message"></i>
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                         </div>
+                        <!-- textarea -->
                         <div class="input-container">
                             <input type="text" v-model="nuovoMessaggio" @keyup.enter="inviaMessaggio" placeholder="Scrivi un messaggio" class="message-input">
                         </div>

@@ -180,6 +180,7 @@ const app = createApp({
         }
     },
     methods: {
+        // seleziona il contatto
         selezionaContatto(index) {
             if (this.contattoSelezionato !== index) {
                 console.log("Selezionando contatto con indice:", index);
@@ -189,6 +190,7 @@ const app = createApp({
                 console.log("Il contatto selezionato è già attivo.");
             }
         },
+        // renderizza la conversazione
         renderConversation() {
             if (this.contattoSelezionato !== true) {
                 console.log("Renderizzazione conversazione per contatto:", this.contattoSelezionato);
@@ -259,6 +261,7 @@ const app = createApp({
 
             this.renderConversation();
         },
+        // funzionamento barra di ricerca
         filteredContacts() {
             return this.contacts.filter(contact => 
                 contact.name.toLowerCase().includes(this.searchBar.toLowerCase())
