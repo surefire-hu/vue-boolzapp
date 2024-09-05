@@ -192,7 +192,7 @@ const app = createApp({
         },
         // renderizza la conversazione
         renderConversation() {
-            if (this.contattoSelezionato !== true) {
+            if (this.contattoSelezionato !== null) {
                 console.log("Renderizzazione conversazione per contatto:", this.contattoSelezionato);
                 const container = document.getElementById('conversation-container');
                 const contact = this.contacts[this.contattoSelezionato];
@@ -203,16 +203,25 @@ const app = createApp({
                             <h3>${contact.name}</h3>
                         </div>
                         <div class="messages-container">
-                            ${contact.messages.map(message => `
+                            ${contact.messages.map((message, index) => `
                                 <div class="message ${message.status}">
                                     <p>${message.message}</p>
                                     <span class="message-time">${message.date}</span>
+                                    <span class="delete" data-index="${index}">✖</span>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
                 `;
                 container.innerHTML = conversationHTML;
+                
+                const deleteButtons = container.querySelectorAll('.delete');
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const index = event.target.getAttribute('data-index');
+                        this.deleteMessage(parseInt(index));
+                    });
+                });
             }     
         },
         // invia il messaggio
@@ -266,8 +275,15 @@ const app = createApp({
             return this.contacts.filter(contact => 
                 contact.name.toLowerCase().includes(this.searchBar.toLowerCase())
             );
-        }
+        },
+        deleteMessage(index) {
+            if (this.contattoSelezionato !== null) {
+                this.contacts[this.contattoSelezionato].messages.splice(index, 1);
+                this.renderConversation();
+            }
+        },
     }
 });
+
 
 app.mount('#app');

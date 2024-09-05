@@ -406,3 +406,7 @@ button {
     display: table;
     clear: both;
 }
+
+span.delete {
+    cursor: pointer;
+}
