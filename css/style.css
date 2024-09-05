@@ -374,24 +374,35 @@ button {
 }
 
 .message {
-    max-width: 40%;
+    display: inline-block;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
+    max-width: 70%;  
 }
 
 .message.sent {
     background-color: #c6f2f8;
-    align-self: flex-end;
-    margin-left: auto;
+    float: right;
+    clear: both;
 }
 
 .message.received {
     background-color: white;
-    align-self: flex-start;
+    float: left;
+    clear: both;
 }
 
 .message-time {
     font-size: 0.8em;
     color: #7a7a7a;
+    display: block;
+    margin-top: 5px;
+}
+
+/* clearfix */
+.messages-container::after {
+    content: "";
+    display: table;
+    clear: both;
 }

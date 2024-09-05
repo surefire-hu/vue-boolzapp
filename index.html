@@ -55,7 +55,7 @@
                     <div class="my-row-8">
                         <div v-for="(contact, index) in filteredContacts()" :key="contact.name" class="contact-item" @click="selezionaContatto(index)">
                             <div class="online-status">
-                            <img :src="contact.avatar" :alt="contact.name" class="contact-avatar">
+                                <img :src="contact.avatar" :alt="contact.name" class="contact-avatar">
                                 <i class="fa-solid fa-circle online" v-if="contact.online"></i>
                                 <i class="fa-solid fa-circle offline" v-else-if="contact.offline"></i>
                                 <i class="fa-solid fa-circle busy" v-else-if="contact.busy"></i>
